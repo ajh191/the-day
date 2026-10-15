@@ -1,0 +1,17 @@
+# 렌파이 컴파일/캐시 파일
+*.rpyc
+*.rpymc
+*.rpyb
+game/cache/
+game/saves/
+
+# 로그·오류 파일
+log.txt
+errors.txt
+traceback.txt
+files.txt
+
+# 백업·OS 잡파일
+*.bak
+.DS_Store
+Thumbs.db
