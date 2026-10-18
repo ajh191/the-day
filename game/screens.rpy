@@ -183,6 +183,21 @@ screen input(prompt):
             text prompt style "input_prompt"
             input id "input"
 
+screen input_center(prompt):
+    style_prefix "input"
+
+    window at textbox_fade:
+        yalign 0.5          # 0.0 = 화면 맨 위, 0.5 = 정중앙, 1.0 = 맨 아래
+
+        vbox:
+            xanchor gui.dialogue_text_xalign
+            xpos gui.dialogue_xpos
+            xsize gui.dialogue_width
+            ypos gui.dialogue_ypos
+
+            text prompt style "input_prompt"
+            input id "input"
+
 style input_prompt is default
 
 style input_prompt:
@@ -1207,6 +1222,12 @@ transform delayed_blink(delay, cycle):
         pause (cycle - .4)
         repeat
 
+transform textbox_fade:
+    on show:
+        alpha 0.0
+        linear 0.5 alpha 1.0
+    on hide:
+        linear 0.3 alpha 0.0
 
 style skip_frame is empty
 style skip_text is gui_text
@@ -1503,8 +1524,13 @@ screen quick_menu():
 
 
 style window:
-    variant "small"
-    background "gui/phone/textbox.png"
+    xalign 0.5
+    xfill True
+    yalign gui.textbox_yalign
+    ysize gui.textbox_height
+
+    # background "gui/phone/textbox.png"
+    background Solid("#000000b3")
 
 style radio_button:
     variant "small"

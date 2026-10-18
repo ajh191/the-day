@@ -12,7 +12,7 @@ default item_keyring = False
 define p = Character("[player_name]", color="#ffffff")
 define s = Character('소은', color="#fbd6b6")
 define t = Character('태은', color="#cde5ff")
-define d = Character('다인', color="#5b5b5b")
+define d = Character('다인', color="#0e0f26", outlines=[(2,"#dddadaa6",0,0)])
 define f = Character('친구들', color="#c1c0c0d2")
 define s_mem = Character("소은", color="#fbd6b6", what_italic=True, what_color="#e8d8bf")
 
@@ -31,7 +31,7 @@ transform memory_in:
 # 1장 - 그날로부터, 1년
 label start:
     scene white
-    $ player_name = renpy.input("이름을 입력해 주세요. (이름을 입력하지 않을 시 \"이준\"으로 자동 설정 됩니다.)")
+    $ player_name = renpy.input("이름을 입력해 주세요. (이름을 입력하지 않을 시 \"이준\"으로 자동 설정 됩니다.)", screen="input_center").strip()
     if not player_name:
         $ player_name = "이준"
 
@@ -316,7 +316,7 @@ label ch2:
     t "대가는 언제나 누군가와 얽힌 것이어야 해."
     t "네가 쥐고 있는 사람들과."
 
-    p "...돌아가서 바꿀 수 있으면, 소은이는—"
+    p "...돌아가서 바꿀 수 있으면, 소은이는.."
 
     t "그건 직접 확인해 봐. "
     t "말로 하면 믿지 않을 거고, 믿으면 더 무서울 테니까."
@@ -418,7 +418,7 @@ label ch2_keep_souen:
     "그러자 다른 쪽이 선명해졌다."
 
     "비가 오는 날이었다."
-    "우산이 없어서 처마 밑에 서 있던 아이."
+    "우산이 없어서 공원 나무 밑에 서 있던 아이."
 
     "노란 우산이 다가왔다."
     "자기 쪽 어깨가 젖는 줄도 모르고, 우산을 절반이나 기울여 주던 아이."
@@ -612,7 +612,7 @@ label ch3:
     
     show souen normal at character_size with dissolve
 
-    p "아, 잠깐만. 나 지금—"
+    p "아, 잠깐만. 나 지금.."
 
     "알고 있었다."
     "이 순간을 이미 한 번 지나왔다는 걸."
@@ -627,7 +627,7 @@ label ch3:
     "소은은 웃고 있었다."
     "웃는 얼굴인데 목소리만 가라앉아 있었다."
 
-    p "그게 아니라, 지금은 애들이—"
+    p "그게 아니라, 지금은 애들이.."
 
     s "됐어. 먼저 갈게."
 
@@ -768,7 +768,7 @@ label ch4:
     "등불 아래, 스케치북을 멘 소은이 서 있었다." 
     "이쪽을 보고 막 입을 열려는 참이었다."
 
-    s "[player_name], 너 왜—"
+    s "[player_name], 너 왜.."
 
     p "소은아, 따라와. 할 말이 있어."
     p "...여기서 말고."
@@ -891,7 +891,7 @@ label ch4:
 
     "입이 열리는 순간이었다."
 
-    d "[player_name]! 거기 있지? [player_name]—!"
+    d "[player_name]! 거기 있지? [player_name]!"
 
     d "매점에 마지막 빵 남았대! 같이 가자!"
 
@@ -1505,7 +1505,7 @@ label ch6:
 
     "그 말을 듣는 동안에도, 이 하루가 내 손에서 빠져나가기 시작했다는 걸 알았다."
 
-    p "소은아—"
+    p "소은아!!"
 
     scene bg rooftop_sunset with flash
     "눈을 떴을 때, 옥상이었다."
