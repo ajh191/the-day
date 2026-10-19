@@ -12,7 +12,7 @@ default item_keyring = False
 define p = Character("[player_name]", color="#ffffff")
 define s = Character('소은', color="#fbd6b6")
 define t = Character('태은', color="#cde5ff")
-define d = Character('다인', color="#0e0f26", outlines=[(2,"#dddadaa6",0,0)])
+define d = Character('다인', color="#16173a", outlines=[(1.4,"#ffffff",0,0)])
 define f = Character('친구들', color="#c1c0c0d2")
 define s_mem = Character("소은", color="#fbd6b6", what_italic=True, what_color="#e8d8bf")
 

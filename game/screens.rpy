@@ -238,6 +238,8 @@ style choice_vbox:
 
 style choice_button is default:
     properties gui.button_properties("choice_button")
+    background Solid("#000000cc")
+    hover_background Solid("#c9a0b4cc")
 
 style choice_button_text is default:
     properties gui.text_properties("choice_button")
@@ -263,8 +265,8 @@ screen quick_menu():
             textbutton _("넘기기") action Skip() alternate Skip(fast=True, confirm=True)
             textbutton _("자동진행") action Preference("auto-forward", "toggle")
             textbutton _("저장하기") action ShowMenu('save')
-            textbutton _("Q.저장하기") action QuickSave()
-            textbutton _("Q.불러오기") action QuickLoad()
+            #textbutton _("Q.저장하기") action QuickSave()
+            #textbutton _("Q.불러오기") action QuickLoad()
             textbutton _("설정") action ShowMenu('preferences')
 
 
@@ -494,7 +496,8 @@ style game_menu_outer_frame:
     bottom_padding 45
     top_padding 180
 
-    background "gui/overlay/game_menu.png"
+    background Transform("gui/overlay/game_menu.png",
+        matrixcolor=TintMatrix("#ffd3e8") * SaturationMatrix(0.0))
 
 style game_menu_navigation_frame:
     xsize 420
@@ -1170,7 +1173,9 @@ style confirm_button is gui_medium_button
 style confirm_button_text is gui_medium_button_text
 
 style confirm_frame:
-    background Frame([ "gui/confirm_frame.png", "gui/frame.png"], gui.confirm_frame_borders, tile=gui.frame_tile)
+    background Frame(Transform("gui/frame.png",
+        matrixcolor=TintMatrix("#ffd3e8") * SaturationMatrix(0.0)),
+        gui.confirm_frame_borders, tile=gui.frame_tile)
     padding gui.confirm_frame_borders.padding
     xalign .5
     yalign .5
