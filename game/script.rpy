@@ -2,6 +2,7 @@
 
 default player_name = "이준"
 
+# 아이템(얻으면 True)
 default item_umbrella = False
 default item_pencil = False
 default item_rooftop_key = False
@@ -19,10 +20,12 @@ define s_mem = Character("소은", color="#fbd6b6", what_italic=True, what_color
 define fade = Fade(0.5, 0.2, 1.0, color="#000000")
 define flash = Fade(0.5, 0.2, 1.2, color="#ffffff")
 
+# 캐릭터 이미지 크기 조절
 transform character_size:
     zoom 0.95
     center
 
+# 회상 장면 연출
 transform memory_in:
     matrixcolor SaturationMatrix(0.35) * TintMatrix("#f2dcc0")
     blur 12
@@ -92,6 +95,7 @@ label start:
 
     d "봉사시간은 무슨. 입만 열심히 일하네."
 
+    play sound "scissors.ogg" loop
     "색종이가 한 장씩 별이 되고, 잎이 되어 갔다. 풀 냄새가 났다."
 
     "다인이 의자 위에 올라서서 게시판 맨 위 모서리를 눌러 붙이며 말했다."
@@ -99,6 +103,7 @@ label start:
     d "축제 날엔 여기 앞에서 다 같이 사진 찍자."
     d "우리가 만든 거라고 자랑해야지!"
 
+    stop sound
     "\'축제 날\'이라는 말이 가위질 소리 사이로 떨어졌다."
 
     "손이 멈춘 걸 안 건, 가위 날이 종이의 선 바깥으로 나가 있는 걸 본 뒤였다."
@@ -242,12 +247,12 @@ label ch2:
 
             "어깨가 스치고, 발소리가 서로 반대쪽으로 갈라졌다"
 
-    hide souen normal with dissolve
+    play sound "flashback.ogg"
+    camera at memory_in
+    hide souen normal with dissolve 
     "스쳐 지나가는 순간, 복도의 소리가 꺼졌다."
 
-    scene white with Dissolve(0.5)
-    camera at memory_in
-    scene bg festival with Dissolve(1.0)
+    scene bg festival with flash
 
     show souen normal at character_size with dissolve
     s_mem "...또 나중이야?"
@@ -255,7 +260,12 @@ label ch2:
     "노을 속으로 걸어 들어가는 교복."
     "점점 작아지는 어깨."
 
+    scene bg crosswalk with dissolve
+    show souen normal at character_size with dissolve
     "붙잡았어야 했던 손목은, 끝내 내 손에 닿지 않았다."
+
+    play sound "brake_screech.ogg"
+    pause 1.5
 
     scene white with Dissolve(0.5)
     camera
@@ -266,7 +276,7 @@ label ch2:
 
     "한참 뒤, 사물함을 열자 접힌 쪽지가 발 아래로 떨어졌다."
 
-    "\'옥상.\' 두 글자뿐이었다."
+    "\'옥상\' 두 글자뿐이었다."
     "필체는 낯설었다."
 
     scene bg rooftop_day with fade
@@ -333,6 +343,7 @@ label ch2:
     t "가로등이 하나뿐인 곳이야."
 
     "태은은 내 옆을 지나 계단 쪽으로 걸어갔다."
+    play sound "door_close.ogg"
     hide taeeun normal with dissolve
 
     scene bg alley with fade
@@ -413,8 +424,9 @@ label ch2_keep_souen:
     "답을 기다리는 동안 눈을 감았다."
     "무언가를 붙들고 있어야 할 것 같았다."
 
-    scene bg park with fade
+    scene black with Dissolve(0.5)
     camera at memory_in
+    scene bg park with Dissolve(1.0)
     "그러자 다른 쪽이 선명해졌다."
 
     "비가 오는 날이었다."
@@ -430,13 +442,16 @@ label ch2_keep_souen:
     "이렇게 또렷했던 적이 없다."
     "손바닥 위에 올려놓을 수 있을 것처럼, 기억이 무게를 가졌다."
 
-    scene bg alley with fade
-    camera
-    show taeeun normal at character_size with dissolve
-
+    play sound "ui_item_get.ogg"
     $ item_umbrella = True
     $ renpy.notify("아이템 획득: 노란 우산의 기억")
-    
+
+    scene black with Dissolve(0.5)
+    camera
+    scene bg alley with Dissolve(1.0)
+    show taeeun normal at character_size with dissolve
+
+    play sound "phone_vibrate.ogg"
     "눈을 떴다. 답이 와 있었다."
 
     d "(문자) 무슨 사진? 우리 그런 거 안 찍었는데?"
@@ -492,6 +507,7 @@ label ch2_keep_dain:
 
     "그 사진을 잠금화면으로 바꿨다."
 
+    play sound "ui_item_get.ogg"
     $ item_dain_photo = True
     $ renpy.notify("아이템 획득: 다인과 찍은 사진")
 
@@ -502,6 +518,7 @@ label ch2_keep_dain:
 
     p "(문자) 우리 처음 만난 날, 기억나?"
 
+    play sound "phone_vibrate.ogg"
     "답은 금방 왔다."
 
     s "(문자) 갑자기? ...잘 모르겠는데."
@@ -525,6 +542,7 @@ label ch2_keep_dain:
 
 # 3장 - 첫 번째 회귀
 label ch3:
+    play sound "return_enter.ogg"
     scene bg festival with flash
 
     "눈을 뜨자 등불이 있었다."
@@ -580,6 +598,7 @@ label ch3:
 
     s "잠깐만. 이 빛, 지금 아니면 못 그려."
 
+    play sound "pencil_sketch.ogg"
     "나는 소은이 그리는 동안 옆에 서 있었다."
     "연필 끝이 종이를 긁는 소리를 들으면서."
 
@@ -591,6 +610,7 @@ label ch3:
 
     p "소은아. 나, 할 말 있어."
 
+    stop sound fadeout 0.5
     show souen surprised at character_size with dissolve
     s "...응?"
 
@@ -599,6 +619,7 @@ label ch3:
 
     "입을 열었다."
 
+    play sound "footsteps.ogg"
     f "야, [player_name]! 여기 있었네!"
 
     f "사진 찍자, 사진! 다 같이!"
@@ -645,10 +666,19 @@ label ch3:
 
     "멀어지는 뒷모습이 노을 속에서 작아졌다."
 
+    play sound "car_horn.ogg"
+    pause 0.5
+
+    play sound "brake_screech.ogg"
+    pause 1.5
+
+    play sound "tinnitus.ogg"
+
     scene black with fade
     "등불이 흔들렸다."
     "모든 소리가 한 겹 아래로 가라앉았다."
 
+    play sound "return_exit.ogg"
     scene bg alley with flash
     "무릎에 손을 짚고 숨을 몰아쉬었다."
 
@@ -686,6 +716,8 @@ label ch3:
     "일어서자마자 다리가 풀렸다." 
     "벽에 등을 대고 주저앉았다."
 
+    play sound "phone_vibrate.ogg"
+    pause 1.0
     "화면에 \'다인\'이라는 이름이 떴다."
 
     hide taeeun normal with dissolve
@@ -760,7 +792,8 @@ label ch4:
     "움켜쥐었다. 손가락 사이로 빠져나간 건 공기뿐이었다."
 
     t "눈 감아."
-
+    
+    play sound "return_enter.ogg"
     scene bg festival with flash
     "이번에는 눈을 뜨자마자 소은을 찾았다."
 
@@ -776,7 +809,7 @@ label ch4:
     "친구들이 몰려오기 전에, 소은의 소맷자락을 잡고 인파를 거슬러 걸었다."
 
     scene bg park with fade
-    "어릴 때 둘이 자주 놀던 공원이었다."
+    "어릴 때 둘이 자주 놀던 곳이자. 소은과 처음 만났던 공원이다."
     "오래된 나무 벤치는 그때와 같은 자리에 있었다."
 
     show souen normal at character_size with dissolve
@@ -843,7 +876,8 @@ label ch4:
     "트럭도, 급브레이크 소리도 없었다."
 
     "아무 일도 일어나지 않았다는 사실이, 이렇게 낯선 일이라니."
-
+    
+    play sound "return_exit.ogg"
     scene bg hallway with flash
 
     "다음 날 아침, 복도 끝에서 소은이 걸어왔다."
@@ -891,6 +925,7 @@ label ch4:
 
     "입이 열리는 순간이었다."
 
+    play sound "door_knock.ogg"
     d "[player_name]! 거기 있지? [player_name]!"
 
     d "매점에 마지막 빵 남았대! 같이 가자!"
@@ -950,11 +985,14 @@ label ch4_stay_taeeun:
 
     hide taeeun normal with dissolve
     
+    play sound "ui_item_get.ogg"
     $ item_rooftop_key = True
     $ renpy.notify("아이템 획득: 옥상 열쇠")
 
     "손바닥에 열쇠의 모서리가 박혔다. 아프지 않을 만큼만."
 
+    play sound "phone_vibrate.ogg"
+    pause 1.0
     "계단을 내려오는 길에 휴대폰을 꺼냈다."
 
     d "(문자) 됐어, 혼자 먹었어ㅋㅋ"
@@ -1037,6 +1075,7 @@ label ch4_go_dain:
 
     d "이거 너 해. 나 까먹지 말라고ㅋㅋ"
 
+    play sound "ui_item_get.ogg"
     $ item_keyring = True
     $ renpy.notify("아이템 획득: 토끼 키링")
 
@@ -1169,6 +1208,9 @@ label ch5:
     "문장이 끝나지 않았다."
     "끝나지 않는 쪽이 더 무서웠다."
 
+    play sound "phone_vibrate.ogg"
+    pause 1.0
+    
     s "(문자) 지금 공원인데, 잠깐 볼 수 있어?"
 
     "1년 만에 소은이 먼저 보낸 문자였다."
@@ -1238,6 +1280,7 @@ label ch5_stay_taeeun:
     "금속이 따뜻했다."
     "방금까지 누군가의 맥박 위에 있었던 온기였다."
 
+    play sound "ui_item_get.ogg"
     $ item_watch = True
     $ renpy.notify("아이템 획득: 멈춘 손목시계")
 
@@ -1329,6 +1372,7 @@ label ch5_go_souen:
 
     s "...네가 갖고 있어."
 
+    play sound "ui_item_get.ogg"
     $ item_pencil = True
     $ renpy.notify("아이템 획득: 몽당연필")
     
@@ -1348,6 +1392,9 @@ label ch6:
     "1년 전과 똑같은 날씨였다."
 
     "일부러 고른 것처럼."
+
+    play sound "phone_vibrate.ogg"
+    pause 1.0
 
     d "(문자) 축제 끝나면 떡볶이 먹자. 약속!"
 
@@ -1408,6 +1455,8 @@ label ch6:
 
     "난간 쪽으로 걸어가, 눈을 감았다."
 
+    play sound "return_enter.ogg"
+
     scene bg festival with flash
     "등불이 켜지기 시작하는 시간이었다."
 
@@ -1466,7 +1515,7 @@ label ch6:
 
     "붙잡지 못했던 손이, 이번에는 먼저 움직였다."
 
-    s "소은아!"
+    p "소은아!"
 
     "등불 사이를 헤치며 달렸다."
     "친구들의 목소리가 등 뒤로 흩어졌다."
@@ -1477,6 +1526,9 @@ label ch6:
 
     "오른쪽에서 트럭의 헤드라이트가 쏟아졌다."
 
+    play sound "car_horn.ogg"
+    pause 0.7
+    
     "생각하지 않았다."
     "생각할 시간이 없었다."
 
@@ -1484,8 +1536,10 @@ label ch6:
 
     "소은의 팔을 잡아당겼다."
 
+    play sound "brake_screech.ogg"
+
+    show souen embarrassed at character_size
     with flash
-    show souen embarrassed at character_size with dissolve
     "바람이 얼굴을 쓸었다."
     "쇠 냄새와 타이어 타는 냄새가 코끝을 훑었다."
 
@@ -1505,7 +1559,9 @@ label ch6:
 
     "그 말을 듣는 동안에도, 이 하루가 내 손에서 빠져나가기 시작했다는 걸 알았다."
 
-    p "소은아!!"
+    p "소은아.."
+
+    play sound "return_exit.ogg"
 
     scene bg rooftop_sunset with flash
     "눈을 떴을 때, 옥상이었다."
@@ -1533,6 +1589,8 @@ label ch6:
 
     "태은은 문 쪽으로 걸어갔다."
     "손잡이를 돌리고, 뒤를 돌아보지 않은 채로 문 너머로 사라졌다."
+
+    play sound "door_close.ogg"
 
     hide taeeun normal with dissolve
     "혼자 남은 옥상에 노을이 내려앉았다."
@@ -1615,6 +1673,8 @@ label end_souen:
     "그날 이후 처음이었다."
     "소은이 이 방에서 연필을 잡는 건."
 
+    play sound "pencil_sketch.ogg"
+
     "선이 한 줄, 또 한 줄 늘어났다."
     "망설이는 선이었다가, 어느새 망설이지 않는 선이 되었다."
 
@@ -1626,6 +1686,7 @@ label end_souen:
     "왜 그게 안도가 되는지는 모르겠다."
     "다만 숨이 길게 나왔다."
 
+    stop sound fadeout 0.5
     s "...됐다. 밑그림만"
 
     scene cg end_souen with flash
@@ -1708,7 +1769,7 @@ label end_taeeun:
 
     t "오랜만의 평범함이야."
 
-    "\'그 애\'가 누구인지는 묻지 않았다."
+    "그 애가 누구인지는 묻지 않았다."
     "묻지 않아도 되는 이야기라는 걸, 어째선지 알았다."
 
     "난간 옆에 섰다."
@@ -1727,6 +1788,10 @@ label end_taeeun:
 
     "당연한 게 이렇게 고마운 일이었나."
 
+    play sound "wind.ogg"
+    pause 1.5
+    stop sound fadeout 1.0
+    
     "한참 동안 아무 말도 하지 않았다."
 
     "얘랑 이 옥상에서, 이렇게 말없이 바람을 맞았던 적이 있는 것 같다."
@@ -1788,6 +1853,8 @@ label end_dain:
 
     "다인은 홱 돌아섰다. 귀가 노을보다 붉었다."
 
+    play sound "paper_peel.ogg"
+
     show dain normal at character_size with dissolve
     "한참 뒤, 다인이 별을 손바닥에 올려놓고 말했다."
 
@@ -1808,6 +1875,10 @@ label end_dain:
 
     "왜 그런 말을 할 만큼 불안했었는지, 나는 정확히 모른다."
     "그런데 몸은 알고 있다는 듯이, 숨이 길게 나왔다."
+
+    play sound "wind.ogg"
+    pause 1.5
+    stop sound fadeout 1.0
 
     "그때, 이름 하나가 머릿속에 떠올랐다."
 

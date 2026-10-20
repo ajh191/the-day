@@ -240,6 +240,8 @@ style choice_button is default:
     properties gui.button_properties("choice_button")
     background Solid("#000000cc")
     hover_background Solid("#c9a0b4cc")
+    hover_sound "audio/ui_hover.ogg"
+    activate_sound "audio/ui_select.ogg"
 
 style choice_button_text is default:
     properties gui.text_properties("choice_button")

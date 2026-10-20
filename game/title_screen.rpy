@@ -1,14 +1,4 @@
-## title_screen.rpy — "그날" 움직이는 타이틀 (A버전: 그날의 거리)
-## game/ 폴더 안에 넣으면 렌파이가 자동으로 읽습니다.
-##
-## 필요한 이미지 (game/images/title/ 폴더)
-##   title_bg.png        완성된 그림 그대로 (1888×1056, 간판의 일본어 글자 지움)
-##   title_lanterns.png  등불 부분만 밝게 오려낸 투명 PNG (1888×1056, 같은 캔버스)
-##   title_glow.png      거리 끝 하얀 빛만 그린 투명 PNG (1888×1056, 같은 캔버스)
-##   leaf_ginkgo.png     은행잎 한 장 (56px, 투명 배경)
-##   leaf_maple.png      단풍잎 한 장 (56px, 투명 배경)
-##   logo.png            "그날" 로고 + 부제 (투명 PNG)
-
+## title_screen.rpy — "그날" 움직이는 타이틀
 
 ## ── 이미지 ─────────────────────────────────────────
 
@@ -200,13 +190,3 @@ screen title_menu():
                 style "title_menu_button"
                 action Quit(confirm=True)
                 at title_menu_in(0.3), title_menu_item
-
-
-## ── 메인 메뉴 화면 ─────────────────────────────────
-## screens.rpy에 있는 기존 "screen main_menu():" 블록 전체를
-## 아래 네 줄로 바꿔 주세요. (블록 아래의 style 정의들은 그대로 둡니다)
-##
-## screen main_menu():
-##     tag menu
-##     use title_layers
-##     use title_menu
