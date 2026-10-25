@@ -25,7 +25,7 @@ transform character_size:
     zoom 0.95
     center
 
-# 회상 장면 연출
+# 화면 전환 효과
 transform memory_in:
     matrixcolor SaturationMatrix(0.35) * TintMatrix("#f2dcc0")
     blur 12
@@ -33,11 +33,14 @@ transform memory_in:
 
 # 1장 - 그날로부터, 1년
 label start:
+    stop music fadeout 1.0
     scene white
+    # 게임 시작 시, 플레이어 이름을 입력받는 부분
     $ player_name = renpy.input("이름을 입력해 주세요. (이름을 입력하지 않을 시 \"이준\"으로 자동 설정 됩니다.)", screen="input_center").strip()
     if not player_name:
         $ player_name = "이준"
 
+    play music "bgm_one_year.ogg" fadein 1.0 volume 0.5 loop
     scene bg room with flash
     "알람이 울리기 전에 눈을 떴다."
 
@@ -69,7 +72,10 @@ label start:
 
     "버릴 수 있었으면, 진작 버렸겠지."
 
+    stop music fadeout 1.0
     scene bg classroom with fade
+    play music "bgm_after_school.ogg" fadein 1.0 loop
+
     "창으로 노을이 길게 들어온다."
     "뒤편 게시판에 색종이 장식이 절반쯤 붙어 있다."
 
@@ -104,6 +110,7 @@ label start:
     d "우리가 만든 거라고 자랑해야지!"
 
     stop sound
+    stop music fadeout 1.0
     "\'축제 날\'이라는 말이 가위질 소리 사이로 떨어졌다."
 
     "손이 멈춘 걸 안 건, 가위 날이 종이의 선 바깥으로 나가 있는 걸 본 뒤였다."
@@ -141,6 +148,7 @@ label start:
 
             "알고 있다는 걸 안다. 모른 척해 준다는 것도."
         
+    play music "bgm_after_school.ogg" fadein 1.0 loop
     "다인이 의자에서 내려와 풀통을 집어 들었다."
 
     hide dain normal with dissolve
@@ -157,6 +165,8 @@ label start:
     "아직 말을 섞어 본 적이 없다."
 
     t "...오랜만이네."
+
+    stop music fadeout 2.0
 
     "낮게 흘린 말이었다."
     "나를 향한 건지, 혼잣말인지 구분이 되지 않았다."
@@ -248,6 +258,7 @@ label ch2:
             "어깨가 스치고, 발소리가 서로 반대쪽으로 갈라졌다"
 
     play sound "flashback.ogg"
+    play music "bgm_one_year.ogg" fadein 1.0 loop
     camera at memory_in
     hide souen normal with dissolve 
     "스쳐 지나가는 순간, 복도의 소리가 꺼졌다."
@@ -266,6 +277,7 @@ label ch2:
 
     play sound "brake_screech.ogg"
     pause 1.5
+    stop music fadeout 1.0
 
     scene white with Dissolve(0.5)
     camera
@@ -280,6 +292,7 @@ label ch2:
     "필체는 낯설었다."
 
     scene bg rooftop_day with fade
+    play music "bgm_guide.ogg" fadein 1.0 loop
     "옥상 문은 원래 잠겨 있어야 한다."
     "그런데 손잡이는 아무 저항 없이 돌아갔다."
 
@@ -344,9 +357,12 @@ label ch2:
 
     "태은은 내 옆을 지나 계단 쪽으로 걸어갔다."
     play sound "door_close.ogg"
+    pause 1.0
     hide taeeun normal with dissolve
+    stop music fadeout 1.0
 
     scene bg alley with fade
+    play music "bgm_price.ogg" fadein 1.0 loop
     "해가 진 뒤, 나는 그 골목에 서 있었다."
 
     "이 골목을 끝까지 걸으면 큰길이 나온다." 
@@ -542,8 +558,11 @@ label ch2_keep_dain:
 
 # 3장 - 첫 번째 회귀
 label ch3:
+    stop music fadeout 1.5
     play sound "return_enter.ogg"
+    
     scene bg festival with flash
+    play music "bgm_festival.ogg" fadein 1.0 loop
 
     "눈을 뜨자 등불이 있었다."
 
@@ -643,6 +662,7 @@ label ch3:
 
     p "...나중에 얘기하자. 나중에."
 
+    stop music fadeout 2.0
     s "...또 나중이야?"
 
     "소은은 웃고 있었다."
@@ -705,6 +725,7 @@ label ch3:
 
             "태은은 아무 말 없이 손을 거두었다."
 
+    play music "bgm_price.ogg" fadein 1.0 volume 0.5 loop
     t "그날의 결과는, 네가 그날 안에 있을 때만 보여."
 
     p "...소은이는. 어떻게 됐는데."
@@ -747,12 +768,15 @@ label ch3:
 
     "그렇게 믿는 것 말고는, 할 수 있는 게 없었다."
 
+    stop music fadeout 1.0
+
     jump ch4
 
 
 # 4장 - 두 번째 시도
 label ch4:
     scene bg alley with fade
+    play music "bgm_price.ogg" fadein 1.0 loop
    
     "하룻밤을 건너뛰고, 나는 다시 그 골목에 서 있었다."
 
@@ -795,6 +819,7 @@ label ch4:
     
     play sound "return_enter.ogg"
     scene bg festival with flash
+    play music "bgm_festival.ogg" fadein 1.0 loop
     "이번에는 눈을 뜨자마자 소은을 찾았다."
 
     show souen normal at character_size with dissolve
@@ -808,7 +833,9 @@ label ch4:
 
     "친구들이 몰려오기 전에, 소은의 소맷자락을 잡고 인파를 거슬러 걸었다."
 
+    stop music fadeout 1.0
     scene bg park with fade
+    play music "bgm_park.ogg" fadein 1.0 loop
     "어릴 때 둘이 자주 놀던 곳이자. 소은과 처음 만났던 공원이다."
     "오래된 나무 벤치는 그때와 같은 자리에 있었다."
 
@@ -860,7 +887,7 @@ label ch4:
 
     show souen normal at character_size with dissolve
     
-    "그날 밤, 우리는 늦도록 언덕에 있었다."
+    "그날 밤, 우리는 늦도록 공원에 있었다."
 
     "축제의 불빛이 하나둘 꺼질 때까지."
     "소은이 별자리를 손가락으로 짚다가 이름을 잘못 말하고 웃을 때까지."
@@ -876,9 +903,11 @@ label ch4:
     "트럭도, 급브레이크 소리도 없었다."
 
     "아무 일도 일어나지 않았다는 사실이, 이렇게 낯선 일이라니."
-    
+
+    stop music fadeout 1.0
     play sound "return_exit.ogg"
     scene bg hallway with flash
+    play music "bgm_one_year.ogg" fadein 1.0 loop
 
     "다음 날 아침, 복도 끝에서 소은이 걸어왔다."
 
@@ -896,7 +925,9 @@ label ch4:
     hide souen normal with dissolve
     "아무것도 바뀌지 않았다."
 
+    stop music fadeout 1.0
     scene bg rooftop_day with fade
+    play music "bgm_guide.ogg" fadein 1.0 loop
     p "소은이는, 나를 기억 못 해. 그 하루를."
 
     show taeeun normal at character_size with dissolve
@@ -925,6 +956,7 @@ label ch4:
 
     "입이 열리는 순간이었다."
 
+    stop music fadeout 0.5
     play sound "door_knock.ogg"
     d "[player_name]! 거기 있지? [player_name]!"
 
@@ -945,6 +977,7 @@ label ch4:
 
 # 4장 1번 분기 - 끝까지 듣다
 label ch4_stay_taeeun:
+    play music "bgm_guide.ogg" fadein 1.0 loop
     p "...계속해. 끝까지 들을게."
 
     "문 너머에서 다인이 이름을 한 번 더 불렀다."
@@ -1037,6 +1070,7 @@ label ch4_go_dain:
 
     scene bg hallway with fade
     show dain normal at character_size with dissolve
+    play music "bgm_dain.ogg" fadein 1.0 loop
     d "야! 왔네! 마지막 크림빵 건졌다."
     d "반 갈라 먹자."
 
@@ -1091,7 +1125,9 @@ jump ch5
 
 # 5장 - 옅어지는 것들
 label ch5:
+    stop music fadeout 2.0
     show bg playground with fade
+    play music "bgm_fading.ogg" fadein 1.0 loop
     "그날 밤, 다인이 불러냈다."
 
     d "(문자) 잠깐 나와. 놀이터."
@@ -1163,7 +1199,9 @@ label ch5:
 
     "그네가 천천히 멈추고, 놀이터에는 가로등 아래의 소리만 남았다."
 
+    stop music fadeout 1.0
     scene bg rooftop_day with fade
+    play music "bgm_guide.ogg" fadein 1.0 volume 0.7 loop
     "다음 날 옥상의 하늘은 낮고 무거웠다."
 
     show taeeun normal at character_size with dissolve
@@ -1183,7 +1221,7 @@ label ch5:
     t "그 애는 지금 살아 있고, 건강하고, 웃으면서 지내."
 
     t "나를 모른다는 것만 빼면."
-    
+
     menu:
         "...그걸 혼자 다 견딘 거야?":
             p "...그걸 혼자 다 견딘 거야?"
@@ -1208,6 +1246,7 @@ label ch5:
     "문장이 끝나지 않았다."
     "끝나지 않는 쪽이 더 무서웠다."
 
+    stop music fadeout 1.0
     play sound "phone_vibrate.ogg"
     pause 1.0
     
@@ -1234,6 +1273,7 @@ menu:
 
 # 5장 1번 분기 - 내가 널 기억할게
 label ch5_stay_taeeun:
+    play music "bgm_guide.ogg" fadein 1.0 loop
     "휴대폰을 주머니에 넣었다."
 
     "소은의 문자는 아직 답이 없는 채로 주머니 속에 있었다."
@@ -1321,6 +1361,7 @@ label ch5_go_souen:
     "서운함인지 안도인지, 나로서는 알 수 없는 웃음이었다."
 
     scene bg park with fade
+    play music "bgm_park.ogg" fadein 1.0 loop
     show souen normal at character_size with dissolve
     "공원 벤치에 소은이 앉아 있었다."
 
@@ -1385,6 +1426,7 @@ jump ch6
     
 # 6장 - 마지막 하루
 label ch6:
+    stop music fadeout 1.0
     scene bg hallway with fade
     "축제 날이었다."
 
@@ -1417,6 +1459,7 @@ label ch6:
             "그 한 줄이 주머니 속에서 오래 무거웠다."
 
     scene bg rooftop_day with fade
+    play music "bgm_guide.ogg" fadein 1.0 loop
     show taeeun normal at character_size with dissolve
     "태은은 난간 앞에 서 있었다."
 
@@ -1455,9 +1498,11 @@ label ch6:
 
     "난간 쪽으로 걸어가, 눈을 감았다."
 
+    stop music fadeout 1.0
     play sound "return_enter.ogg"
 
     scene bg festival with flash
+    play music "bgm_festival.ogg" fadein 1.0 loop
     "등불이 켜지기 시작하는 시간이었다."
 
     "인파 저편에서 누군가 손을 흔들었다."
@@ -1506,6 +1551,8 @@ label ch6:
 
     s "...미안."
 
+    stop music fadeout 1.0
+    play music "bgm_last_day.ogg" fadein 1.0 loop
     "소은이 돌아서서 걸음을 옮겼다."
     "처음에는 걷다가, 곧 달리기에 가까워졌다."
 
@@ -1536,6 +1583,7 @@ label ch6:
 
     "소은의 팔을 잡아당겼다."
 
+    stop music fadeout 0.3
     play sound "brake_screech.ogg"
 
     show souen embarrassed at character_size
@@ -1593,6 +1641,7 @@ label ch6:
     play sound "door_close.ogg"
 
     hide taeeun normal with dissolve
+    play music "bgm_one_year.ogg" fadein 1.0 volume 0.5 loop
     "혼자 남은 옥상에 노을이 내려앉았다."
 
     "난간에 금빛이 걸리고, 운동장 쪽에서 축제의 마지막 소음이 올라왔다."
@@ -1617,7 +1666,7 @@ label ch6:
 
     "그중 하나를 쥐었다."
     "이 손이 가려는 쪽으로, 가면 된다."
-
+    
     menu:
         "소은을 찾아간다.\n(노란 우산의 기억 또는 몽당연필 필요)" if item_umbrella or item_pencil:
             jump end_souen
@@ -1630,6 +1679,8 @@ label ch6:
 
 # 소은 엔딩 루트
 label end_souen:
+    stop music fadeout 1.0
+    play music "bgm_ending.ogg" fadein 3.0 loop
     scene bg artroom with fade
     "축제로부터 몇 주가 지났다."
 
@@ -1722,6 +1773,7 @@ label end_souen:
     "노을이 소은의 손등을 따라 흘렀다."
     "연필 가루가 묻은 손끝이 금빛으로 보였다."
     
+    stop music fadeout 4.0
     scene black with fade
     "소은 엔딩 — 다 그리면 알려줄게"
     
@@ -1729,6 +1781,8 @@ label end_souen:
 
 # 태은 엔딩 루트
 label end_taeeun:
+    stop music fadeout 1.0
+    play music "bgm_ending.ogg" fadein 3.0 loop
     scene bg rooftop_day with fade
     "축제가 끝나고 며칠이 지났다." 
 
@@ -1812,6 +1866,7 @@ label end_taeeun:
 
     "그 뒤를 따라갔다."
 
+    stop music fadeout 4.0
     scene black with fade
     "태은 엔딩 — 오랜만의 평범함"
     
@@ -1819,6 +1874,8 @@ label end_taeeun:
 
 # 다인 엔딩 루트
 label end_dain:
+    stop music fadeout 1.0
+    play music "bgm_ending.ogg" fadein 3.0 loop
     scene bg classroom with fade
     "축제가 끝나고 몇 주가 지났다."
 
@@ -1918,6 +1975,7 @@ label end_dain:
 
     "그래도 노을 아래, 다인은 여전히 여기 있다."
 
+    stop music fadeout 4.0
     scene black with fade
     "다인 엔딩 — 여전히, 여기"
     

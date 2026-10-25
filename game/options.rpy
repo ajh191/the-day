@@ -91,6 +91,14 @@ define config.after_load_transition = None
 
 define config.end_game_transition = None
 
+## 메인화면에 쓰일 음악
+
+define config.main_menu_music = "audio/bgm_main_theme.ogg"
+
+## 메인화면 음악 페이드 아웃 시간
+
+define config.main_menu_music_fadein = 1.0
+
 
 ## 게임을 시작할 때 사용되는 전환을 설정하는 변수가 없습니다. 대신, 초기 장면을
 ## 표시한 후 with 문을 사용하십시오.
