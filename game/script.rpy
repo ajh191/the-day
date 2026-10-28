@@ -31,6 +31,12 @@ transform memory_in:
     blur 12
     linear 1.2 blur 1.5
 
+# 엔딩크레딧(위 -> 아래)
+transform credit(duration):
+    xalign 0.5
+    ypos 0.0 yanchor 1.0        # 시작: 묶음 전체가 화면 위쪽 바깥에 숨어 있음
+    linear duration ypos 1.0 yanchor 0.0   # 끝: 화면 아래쪽 바깥으로 완전히 빠져나감
+
 # 1장 - 그날로부터, 1년
 label start:
     stop music fadeout 1.0
@@ -1777,7 +1783,7 @@ label end_souen:
     scene black with fade
     "소은 엔딩 — 다 그리면 알려줄게"
     
-    return
+    jump ending_credit
 
 # 태은 엔딩 루트
 label end_taeeun:
@@ -1870,7 +1876,7 @@ label end_taeeun:
     scene black with fade
     "태은 엔딩 — 오랜만의 평범함"
     
-    return
+    jump ending_credit
 
 # 다인 엔딩 루트
 label end_dain:
@@ -1979,4 +1985,14 @@ label end_dain:
     scene black with fade
     "다인 엔딩 — 여전히, 여기"
     
-    return
+    jump ending_credit
+
+label ending_credit:
+    scene black with fade
+    # play music "audio/ending_theme.ogg" fadein 2.0
+    call screen ending_credit
+    # stop music fadeout 3.0
+    
+    scene black with Dissolve(2.0) 
+    pause 1.0
+    return 

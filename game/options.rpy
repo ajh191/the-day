@@ -89,7 +89,7 @@ define config.after_load_transition = None
 
 ## 게임 종료 후 주 메뉴에 진입할 때 사용됩니다.
 
-define config.end_game_transition = None
+define config.end_game_transition = Fade(1.0, 0.5, 1.0)
 
 ## 메인화면에 쓰일 음악
 
@@ -127,7 +127,7 @@ define config.window_hide_transition = Dissolve(.2)
 ## 기본 글자 속도를 제어합니다. 기본적으로, 0은 즉시이며 다른 숫자는 초당 입력
 ## 할 문자 수입니다.
 
-default preferences.text_cps = 0
+default preferences.text_cps = 30
 
 
 ## 기본 auto-forward 지연 시간입니다. 숫자가 클수록 대기 시간이 길어지며, 0 ~ 30
