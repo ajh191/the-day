@@ -1989,9 +1989,9 @@ label end_dain:
 
 label ending_credit:
     scene black with fade
-    # play music "audio/ending_theme.ogg" fadein 2.0
-    call screen ending_credit
-    # stop music fadeout 3.0
+    play music "bgm_credit.ogg" fadein 2.0
+    call screen ending_credit(skippable=False)
+    stop music fadeout 3.0
     
     scene black with Dissolve(2.0) 
     pause 1.0

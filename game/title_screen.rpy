@@ -125,7 +125,7 @@ screen title_whiteout():
 ## 밝은 안개(화면 가운데 높이)와 스케치북(오른쪽 아래)을 피한 자리입니다.
 
 ## 메뉴 위치와 간격. 그림 기준 좌표라 여기만 고치면 전체가 같이 움직입니다.
-define title_menu_pos = (120, 480)
+define title_menu_pos = (120, 400)
 define title_menu_spacing = 24
 
 ## 글자 색
@@ -185,8 +185,13 @@ screen title_menu():
             action ShowMenu("preferences")
             at title_menu_in(0.2), title_menu_item
 
+        textbutton "크레딧":
+            style "title_menu_button"
+            action Start("ending_credit")
+            at title_menu_in(0.3), title_menu_item
+        
         if renpy.variant("pc"):
             textbutton "종료":
                 style "title_menu_button"
                 action Quit(confirm=True)
-                at title_menu_in(0.3), title_menu_item
+                at title_menu_in(0.4), title_menu_item

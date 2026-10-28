@@ -317,6 +317,8 @@ screen navigation():
 
             textbutton _("시작하기") action Start()
 
+            textbutton _("크레딧") action Start("ending_credit")
+
         else:
 
             textbutton _("대사록") action ShowMenu("history")
@@ -481,26 +483,48 @@ screen game_menu(title, scroll=None, yinitial=0.0, spacing=0):
         key "game_menu" action ShowMenu("main_menu")
 
 ## 엔딩크레딧 화면
-screen ending_credit():
+screen ending_credit(skippable=True):
     modal True
     add Solid("#000")
+
+    if skippable:
+        button:
+            xfill True
+            yfill True
+            background None
+            action Return()
 
     vbox at credit(duration=40.0):
         spacing 24
 
-        # ⚠ 위→아래 방식은 '아래쪽 줄'이 먼저 화면에 들어옵니다.
-        # 그래서 먼저 보여 줄 항목을 맨 아래에 적어야 해요.
+        # 위→아래 방식은 아래쪽 줄이 먼저 화면에 들어옵니다.
         text "Thank you for playing" size 40 xalign 0.5
         null height 80
-        text "음악  ○○○" xalign 0.5
-        text "일러스트  ○○○" xalign 0.5
+        text "효과음  効果音ラボ, Pixabay, Freesound" xalign 0.5
         null height 40
-        text "시나리오  ○○○" xalign 0.5
+        text "음악  SunoAI, Claude" xalign 0.5
+        null height 40
+        text "일러스트  PixAI" xalign 0.5
+        null height 40
+        text "프로그래밍  안진호" xalign 0.5
+        null height 40
+        text "시나리오  안진호, Claude" xalign 0.5
+        null height 40
+        text "제작  안진호" xalign 0.5
+        null height 40
+        text "기획  안진호" xalign 0.5
         null height 80
         text "그날 - 그럼에도, 오늘을" size 56 xalign 0.5
 
-    timer 41.0 action Return()          # 스크롤이 끝나면 자동 종료
-    key "dismiss" action Return()       # 클릭/엔터로 건너뛰기 (원치 않으면 삭제)
+    if skippable:
+        textbutton _("건너뛰기 ▶"):
+            xalign 0.97
+            yalign 0.97
+            action Return()
+        key "dismiss" action Return()      # 클릭, 엔터, 스페이스
+        key "game_menu" action Return()    # ESC, 우클릭
+
+    timer 41.0 action Return()
 
 style game_menu_outer_frame is empty
 style game_menu_navigation_frame is empty
