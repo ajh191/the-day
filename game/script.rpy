@@ -465,7 +465,7 @@ label ch2_keep_souen:
     "손바닥 위에 올려놓을 수 있을 것처럼, 기억이 무게를 가졌다."
 
     play sound "ui_item_get.ogg"
-    $ item_umbrella = True
+    $ get_item("umbrella")
     $ renpy.notify("아이템 획득: 노란 우산의 기억")
 
     scene black with Dissolve(0.5)
