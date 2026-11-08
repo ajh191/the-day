@@ -466,7 +466,6 @@ label ch2_keep_souen:
 
     play sound "ui_item_get.ogg"
     $ get_item("umbrella")
-    $ renpy.notify("아이템 획득: 노란 우산의 기억")
 
     scene black with Dissolve(0.5)
     camera
@@ -530,8 +529,7 @@ label ch2_keep_dain:
     "그 사진을 잠금화면으로 바꿨다."
 
     play sound "ui_item_get.ogg"
-    $ item_dain_photo = True
-    $ renpy.notify("아이템 획득: 다인과 찍은 사진")
+    $ get_item("dain_photo")
 
     "확인하고 싶었다. 정말 비어 버렸는지."
 
@@ -1025,8 +1023,8 @@ label ch4_stay_taeeun:
     hide taeeun normal with dissolve
     
     play sound "ui_item_get.ogg"
-    $ item_rooftop_key = True
-    $ renpy.notify("아이템 획득: 옥상 열쇠")
+    
+    $ get_item("rooftop_key")
 
     "손바닥에 열쇠의 모서리가 박혔다. 아프지 않을 만큼만."
 
@@ -1036,7 +1034,6 @@ label ch4_stay_taeeun:
 
     d "(문자) 됐어, 혼자 먹었어ㅋㅋ"
 
-    "\'ㅋㅋ\'가 붙어 있었다." 
     "웃는 글자인데, 웃음소리로 읽히지 않았다."
 
     "빵 하나 때문이 아니라는 걸 안다."
@@ -1116,8 +1113,7 @@ label ch4_go_dain:
     d "이거 너 해. 나 까먹지 말라고ㅋㅋ"
 
     play sound "ui_item_get.ogg"
-    $ item_keyring = True
-    $ renpy.notify("아이템 획득: 토끼 키링")
+    $ get_item("keyring")
 
     "농담이었다."
     "농담이라는 걸 아는데, 웃음이 나오지 않았다."
@@ -1186,14 +1182,15 @@ label ch5:
     d "근데 너만은 잊지 마라? 나 여기 있으니까."
 
     menu:
-        "새끼손가락을 내민다. \"약속\"":
-            p "약속."
+        "\"안 잊어. 약속.\" 다인의 손 위에 손을 얹는다.":
+            p "안 잊어. 약속."
 
-            "새끼손가락을 내밀었다."
+            "그네 체인을 쥔 다인의 손 위에 내 손을 얹었다."
 
-            d "...유치하게."
+            show dain embarrassed at character_size with dissolve
+            d "…뭐야, 갑자기."
 
-            "그러면서도 다인은 손가락을 걸었다."
+            "그러면서도 다인은 손을 빼지 않았다."
             "생각보다 오래, 놓지 않았다."
 
         "\"누가 잊는다고 그래.\" 웃어넘긴다":
@@ -1327,8 +1324,7 @@ label ch5_stay_taeeun:
     "방금까지 누군가의 맥박 위에 있었던 온기였다."
 
     play sound "ui_item_get.ogg"
-    $ item_watch = True
-    $ renpy.notify("아이템 획득: 멈춘 손목시계")
+    $ get_item("watch")
 
     "태은의 손목에는 시계가 있던 자리만 하얗게 자국이 남아 있었다."
 
@@ -1420,8 +1416,7 @@ label ch5_go_souen:
     s "...네가 갖고 있어."
 
     play sound "ui_item_get.ogg"
-    $ item_pencil = True
-    $ renpy.notify("아이템 획득: 몽당연필")
+    $ get_item("pencil")
     
     "연필이 내 손바닥에 올라왔다."
     "가벼운데, 오래 쥐고 있던 손의 온기가 남아 있었다."
@@ -1990,7 +1985,7 @@ label end_dain:
 label ending_credit:
     scene black with fade
     play music "bgm_credit.ogg" fadein 2.0
-    call screen ending_credit(skippable=False)
+    call screen ending_credit
     stop music fadeout 3.0
     
     scene black with Dissolve(2.0) 
