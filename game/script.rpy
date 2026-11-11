@@ -218,7 +218,7 @@ label ch2:
     scene bg hallway with fade
     "다음 날."
 
-    show souen normal at character_size with dissolve
+    show soeun normal at character_size with dissolve
     "복도 끝에서 소은이 걸어오고 있었다."
 
     "책을 가슴에 끌어안고, 시선은 발끝에 둔 채로."
@@ -246,7 +246,7 @@ label ch2:
         "\"안녕.\" 소리 내어 인사한다.":
             p "안녕."
             
-            show souen surprised at character_size with dissolve
+            show soeun surprised at character_size with dissolve
             "소은이 멈칫했다."
             "신발 끝이 바닥에서 반 박자 늦게 떨어졌다."
             
@@ -266,19 +266,19 @@ label ch2:
     play sound "flashback.ogg"
     play music "bgm_one_year.ogg" fadein 1.0 loop
     camera at memory_in
-    hide souen normal with dissolve 
+    hide soeun normal with dissolve 
     "스쳐 지나가는 순간, 복도의 소리가 꺼졌다."
 
     scene bg festival with flash
 
-    show souen normal at character_size with dissolve
+    show soeun normal at character_size with dissolve
     s_mem "...또 나중이야?"
 
     "노을 속으로 걸어 들어가는 교복."
     "점점 작아지는 어깨."
 
     scene bg crosswalk with dissolve
-    show souen normal at character_size with dissolve
+    show soeun normal at character_size with dissolve
     "붙잡았어야 했던 손목은, 끝내 내 손에 닿지 않았다."
 
     play sound "brake_screech.ogg"
@@ -413,12 +413,12 @@ label ch2:
 
     menu:
         "소은과의 첫 기억만은 지킨다. 대신 다인과의 사진을 내놓는다.":
-            jump ch2_keep_souen
+            jump ch2_keep_soeun
         "다인과의 사진만은 지킨다. 대신 소은과의 첫 기억을 내놓는다.":
             jump ch2_keep_dain    
 
 # 2장 1번 분기 - 사진 한 장을 내놓다
-label ch2_keep_souen:
+label ch2_keep_soeun:
     p "...사진으로 해."
 
     "말하고 나서야, 숨을 참고 있었다는 걸 알았다."
@@ -580,7 +580,7 @@ label ch3:
 
     "돌아왔다. 정말로."
 
-    show souen normal at character_size with dissolve
+    show soeun normal at character_size with dissolve
     s "[player_name]!"
 
     "인파 사이에서 누군가 손을 흔들었다."
@@ -598,12 +598,12 @@ label ch3:
 
             "소은이 눈을 깜박였다."
 
-            show souen embarrassed at character_size with dissolve
+            show soeun embarrassed at character_size with dissolve
             s "…뭐래."
 
             "소은은 고개를 휙 돌렸다."
             "귀 끝이 빨갛게 물들어 있었다."
-            show souen normal at character_size with dissolve
+            show soeun normal at character_size with dissolve
 
         "길이 좀 막혀서.":
             p "길이 좀 막혀서."
@@ -634,7 +634,7 @@ label ch3:
     p "소은아. 나, 할 말 있어."
 
     stop sound fadeout 0.5
-    show souen surprised at character_size with dissolve
+    show soeun surprised at character_size with dissolve
     s "...응?"
 
     "소은의 연필이 멈췄다."
@@ -654,7 +654,7 @@ label ch3:
     
     "소은이 스케치북을 천천히 덮었다."
     
-    show souen normal at character_size with dissolve
+    show soeun normal at character_size with dissolve
 
     p "아, 잠깐만. 나 지금.."
 
@@ -682,7 +682,7 @@ label ch3:
     "붙잡아야 하는데, 팔은 친구들에게 붙들려 있었고 발은 바닥에 붙어 있었다."
 
     scene bg crosswalk with fade
-    show souen normal at character_size with dissolve
+    show soeun normal at character_size with dissolve
     p "소은아!"
 
     "소은은 돌아보지 않았다."
@@ -826,7 +826,7 @@ label ch4:
     play music "bgm_festival.ogg" fadein 1.0 loop
     "이번에는 눈을 뜨자마자 소은을 찾았다."
 
-    show souen normal at character_size with dissolve
+    show soeun normal at character_size with dissolve
     "등불 아래, 스케치북을 멘 소은이 서 있었다." 
     "이쪽을 보고 막 입을 열려는 참이었다."
 
@@ -843,7 +843,7 @@ label ch4:
     "어릴 때 둘이 자주 놀던 곳이자. 소은과 처음 만났던 공원이다."
     "오래된 나무 벤치는 그때와 같은 자리에 있었다."
 
-    show souen normal at character_size with dissolve
+    show soeun normal at character_size with dissolve
     "소은은 숨을 고르며 벤치에 앉았다." 
     "스케치북을 무릎 위에 올려놓고."
 
@@ -859,7 +859,7 @@ label ch4:
 
     p "나, 너 좋아해."
     
-    show souen surprised at character_size with dissolve
+    show soeun surprised at character_size with dissolve
 
     p "오래전부터."
     p "나중에, 가 아니라 오늘 말하고 싶었어."
@@ -869,7 +869,7 @@ label ch4:
     "소은은 한참 아무 말도 하지 않았다." 
     "스케치북 모서리를 쥔 손끝이 하얗게 되어 있었다."
 
-    show souen embarrassed at character_size with dissolve
+    show soeun embarrassed at character_size with dissolve
     s "...나도."
 
     menu:
@@ -889,7 +889,7 @@ label ch4:
             "소은도 아무 말이 없었다."
             "그 침묵이 불편하지 않다는 사실에, 놀랐다."
 
-    show souen normal at character_size with dissolve
+    show soeun normal at character_size with dissolve
     
     "그날 밤, 우리는 늦도록 공원에 있었다."
 
@@ -903,7 +903,7 @@ label ch4:
 
     p "응. 내일."
 
-    hide souen normal with dissolve
+    hide soeun normal with dissolve
     "트럭도, 급브레이크 소리도 없었다."
 
     "아무 일도 일어나지 않았다는 사실이, 이렇게 낯선 일이라니."
@@ -915,7 +915,7 @@ label ch4:
 
     "다음 날 아침, 복도 끝에서 소은이 걸어왔다."
 
-    show souen normal at character_size with dissolve
+    show soeun normal at character_size with dissolve
     "언덕에서 \'...나도\'라고 말하던 소은이."
 
     "그 하루를 기억하는 건, 나 하나였다."
@@ -926,7 +926,7 @@ label ch4:
     "나도 같은 모양으로 고개를 숙였다." 
     "그게 전부였다."
 
-    hide souen normal with dissolve
+    hide soeun normal with dissolve
     "아무것도 바뀌지 않았다."
 
     stop music fadeout 1.0
@@ -1272,7 +1272,7 @@ menu:
     "옥상에 남아 태은 곁에 있는다.":
         jump ch5_stay_taeeun
     "소은이 기다리는 공원으로 간다.":
-        jump ch5_go_souen
+        jump ch5_go_soeun
 
 # 5장 1번 분기 - 내가 널 기억할게
 label ch5_stay_taeeun:
@@ -1348,7 +1348,7 @@ label ch5_stay_taeeun:
 jump ch6
 
 # 5장 2번 분기 - 용기를 낸 대가
-label ch5_go_souen:
+label ch5_go_soeun:
     p "...다녀올게."
 
     t "응."
@@ -1364,7 +1364,7 @@ label ch5_go_souen:
 
     scene bg park with fade
     play music "bgm_park.ogg" fadein 1.0 loop
-    show souen normal at character_size with dissolve
+    show soeun normal at character_size with dissolve
     "공원 벤치에 소은이 앉아 있었다."
 
     "스케치북은 없었다."
@@ -1507,7 +1507,7 @@ label ch6:
     "등불이 켜지기 시작하는 시간이었다."
 
     "인파 저편에서 누군가 손을 흔들었다."
-    show souen normal at character_size with dissolve
+    show soeun normal at character_size with dissolve
     "어깨에 스케치북을 멘 소은이었다."
 
     s "[player_name]! 여기야. 오늘은 안 늦었네?"
@@ -1543,11 +1543,11 @@ label ch6:
 
     p "그날 붙잡지 못해서 미안했어."
 
-    show souen surprised at character_size with dissolve
+    show soeun surprised at character_size with dissolve
     "소은의 눈이 커졌다."
     "입술이 무언가를 말하려다 다물렸다."
 
-    show souen normal at character_size with dissolve
+    show soeun normal at character_size with dissolve
     "스케치북을 끌어안고, 한 걸음 물러났다."
 
     s "...미안."
@@ -1569,7 +1569,7 @@ label ch6:
     "친구들의 목소리가 등 뒤로 흩어졌다."
 
     scene bg crosswalk with fade
-    show souen normal at character_size with dissolve
+    show soeun normal at character_size with dissolve
     "횡단보도 앞에서, 소은이 신호를 보지 않고 발을 내딛고 있었다."
 
     "오른쪽에서 트럭의 헤드라이트가 쏟아졌다."
@@ -1587,7 +1587,7 @@ label ch6:
     stop music fadeout 0.3
     play sound "brake_screech.ogg"
 
-    show souen embarrassed at character_size
+    show soeun embarrassed at character_size
     with flash
     "바람이 얼굴을 쓸었다."
     "쇠 냄새와 타이어 타는 냄새가 코끝을 훑었다."
@@ -1670,7 +1670,7 @@ label ch6:
     
     menu:
         "소은을 찾아간다.\n(노란 우산의 기억 또는 몽당연필 필요)" if item_umbrella or item_pencil:
-            jump end_souen
+            jump end_soeun
         
         "이 옥상에, 다시 올라오기로 한다.\n(옥상 열쇠 또는 멈춘 손목시계 필요)" if item_rooftop_key or item_watch:
             jump end_taeeun
@@ -1679,7 +1679,7 @@ label ch6:
             jump end_dain
 
 # 소은 엔딩 루트
-label end_souen:
+label end_soeun:
     stop music fadeout 1.0
     play music "bgm_ending.ogg" fadein 3.0 loop
     scene bg artroom with fade
@@ -1704,7 +1704,7 @@ label end_souen:
 
     "미술실 문을 열면 연필 깎는 냄새가 났다."
 
-    show souen normal at character_size with dissolve
+    show soeun normal at character_size with dissolve
 
     "소은은 창가 쪽 책상에 앉아 있었다."
     "나는 이젤 하나를 사이에 두고 맞은편에 앉았다."
@@ -1741,7 +1741,7 @@ label end_souen:
     stop sound fadeout 0.5
     s "...됐다. 밑그림만"
 
-    scene cg end_souen with flash
+    scene cg end_soeun with flash
     "소은이 스케치북을 이쪽으로 돌려 보여 주었다."
 
     "노을 아래, 나란히 걷는 두 사람의 뒷모습."
