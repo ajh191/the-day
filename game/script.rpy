@@ -1982,6 +1982,7 @@ label end_dain:
     
     jump ending_credit
 
+# 엔딩크레딧
 label ending_credit:
     scene black with fade
     play music "bgm_credit.ogg" fadein 2.0

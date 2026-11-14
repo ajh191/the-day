@@ -258,6 +258,13 @@ screen quick_menu():
 
     if quick_menu:
 
+        frame:
+            xalign 0.5
+            yalign 1.0
+            ysize 35
+            background Solid("#000000b3")
+            padding (30, 6)
+        
         hbox:
             style_prefix "quick"
             style "quick_menu"
@@ -485,52 +492,6 @@ screen game_menu(title, scroll=None, yinitial=0.0, spacing=0):
 
     if main_menu:
         key "game_menu" action ShowMenu("main_menu")
-
-## 엔딩크레딧 화면
-screen ending_credit(skippable=True):
-    modal True
-    add Solid("#000")
-
-    if skippable:
-        button:
-            xfill True
-            yfill True
-            background None
-            action Return()
-
-    vbox at credit(duration=40.0):
-        spacing 24
-
-        # 위→아래 방식은 아래쪽 줄이 먼저 화면에 들어옵니다.
-        text "Thank you for playing" size 40 xalign 0.5
-        null height 80
-        text "폰트  눈누(Pretendard)" xalign 0.5
-        null height 40
-        text "효과음  効果音ラボ, Pixabay, Freesound" xalign 0.5
-        null height 40
-        text "음악  SunoAI, Claude" xalign 0.5
-        null height 40
-        text "일러스트  PixAI" xalign 0.5
-        null height 40
-        text "프로그래밍  안진호" xalign 0.5
-        null height 40
-        text "시나리오  안진호, Claude" xalign 0.5
-        null height 40
-        text "제작  안진호" xalign 0.5
-        null height 40
-        text "기획  안진호" xalign 0.5
-        null height 80
-        text "그날 - 그럼에도, 오늘을" size 56 xalign 0.5
-
-    if skippable:
-        textbutton _("건너뛰기 ▶"):
-            xalign 0.97
-            yalign 0.97
-            action Return()
-        key "dismiss" action Return()      # 클릭, 엔터, 스페이스
-        key "game_menu" action Return()    # ESC, 우클릭
-
-    timer 41.0 action Return()
 
 style game_menu_outer_frame is empty
 style game_menu_navigation_frame is empty
@@ -1669,3 +1630,747 @@ style slider_vbox:
 style slider_slider:
     variant "small"
     xsize 900
+
+
+## 엔딩크레딧 화면
+screen ending_credit(skippable=True):
+    modal True
+    add Solid("#000")
+
+    if skippable:
+        button:
+            xfill True
+            yfill True
+            background None
+            action Return()
+
+    vbox at credit(duration=40.0):
+        spacing 24
+
+        # 위→아래 방식은 아래쪽 줄이 먼저 화면에 들어옵니다.
+        text "Thank you for playing" size 40 xalign 0.5
+        null height 80
+        text "폰트  Pretendard" xalign 0.5
+        null height 40
+        text "효과음  効果音ラボ, Pixabay, Freesound" xalign 0.5
+        null height 40
+        text "음악  SunoAI, Claude" xalign 0.5
+        null height 40
+        text "일러스트  PixAI, ChatGPT" xalign 0.5
+        null height 40
+        text "프로그래밍  안진호" xalign 0.5
+        null height 40
+        text "시나리오  안진호, Claude" xalign 0.5
+        null height 40
+        text "제작  안진호" xalign 0.5
+        null height 40
+        text "기획  안진호" xalign 0.5
+        null height 80
+        text "그날 - 그럼에도, 오늘을" size 56 xalign 0.5
+
+    if skippable:
+        textbutton _("건너뛰기 >"):
+            xalign 0.97
+            yalign 0.03
+            action Return()
+
+    timer 41.0 action Return()
+
+
+################################################################################
+## 움직이는 타이틀 화면
+################################################################################
+
+## ── 이미지 ─────────────────────────────────────────
+
+image title_bg       = "images/title/title_bg.png"
+image title_lanterns = "images/title/title_lanterns.png"
+image title_glow     = "images/title/title_glow.png"
+image title_logo     = "images/title/logo.png"
+image white          = Solid("#ffffff")
+
+## 화면을 빈틈없이 덮도록 확대 비율을 자동으로 계산(1888x1056)합니다.
+define title_w = 1888
+define title_h = 1056
+define title_cover = max(config.screen_width / 1888.0, config.screen_height / 1056.0)
+
+## 거리 끝 하얀 빛의 중심 (그림 기준 비율). title_glow.png를 이 자리에 맞춰 만들었습니다.
+define title_glow_center = (0.368, 0.625)
+
+
+## ── 움직임 ─────────────────────────────────────────
+
+## 화면 전체가 아주 천천히 다가왔다 물러납니다. (숨 쉬는 느낌)
+## 확대의 기준점을 거리 끝 빛에 두어, 그 빛 쪽으로 다가가는 것처럼 보입니다.
+transform title_drift(base=1.0):
+    subpixel True
+    align title_glow_center
+    zoom base
+    ease 25.0 zoom base * 1.03
+    ease 25.0 zoom base
+    repeat
+
+## 등불 깜박임. 일부러 박자를 고르지 않게 해서 기계적으로 보이지 않게 합니다.
+transform lantern_flicker:
+    alpha 0.0
+    block:
+        ease 1.8 alpha 0.55
+        ease 0.9 alpha 0.35
+        ease 1.4 alpha 0.6
+        ease 2.2 alpha 0.2
+        repeat
+
+## 거리 끝 하얀 빛이 천천히 밝아졌다 흐려집니다.
+transform glow_breath:
+    alpha 0.5
+    block:
+        ease 4.0 alpha 0.85
+        ease 4.0 alpha 0.5
+        repeat
+
+## 떨어지는 잎이 돌면서 내려옵니다.
+transform leaf_spin_cw:
+    rotate 0
+    linear 5.0 rotate 360
+    repeat
+
+transform leaf_spin_ccw:
+    rotate 0
+    linear 7.0 rotate -360
+    repeat
+
+## 로고가 살짝 떠오르며 나타납니다.
+transform logo_in:
+    alpha 0.0
+    yoffset 10
+    pause 0.6
+    ease 1.5 alpha 1.0 yoffset 0
+
+
+## ── 떨어지는 잎 (파티클) ───────────────────────────
+## count: 화면에 동시에 있는 잎 수 / xspeed: 옆으로 흐르는 속도(음수면 왼쪽)
+## yspeed: 떨어지는 속도 / fast=True: 처음부터 화면에 잎이 차 있는 상태로 시작
+
+image title_leaves_ginkgo = SnowBlossom(
+    At("images/title/leaf_ginkgo.png", leaf_spin_cw),
+    count=6, xspeed=(20, 60), yspeed=(50, 110), fast=True)
+
+image title_leaves_maple = SnowBlossom(
+    At("images/title/leaf_maple.png", leaf_spin_ccw),
+    count=4, xspeed=(10, 50), yspeed=(40, 90), fast=True)
+
+
+## ── 타이틀 화면 레이어 ─────────────────────────────
+## screens.rpy의 main_menu 화면에서 이 화면을 불러 씁니다.
+
+screen title_layers():
+
+    ## 배경·등불·빛은 한 묶음으로 같이 움직여야 위치가 어긋나지 않습니다.
+    fixed:
+        xysize (title_w, title_h)
+        at title_drift(title_cover)
+        add "title_bg"
+        add "title_lanterns" at lantern_flicker
+        add "title_glow" at glow_breath
+
+    add "title_leaves_maple"
+    add "title_leaves_ginkgo"
+
+    ## 위쪽 등불 줄과 둘째 줄 사이의 하늘 자리입니다.
+    add "title_logo" pos (110, 120) at logo_in
+
+
+## ── "시작하기"를 눌렀을 때: 하얀 빛이 화면을 덮으며 시작 ──
+
+transform whiteout_glow:
+    align title_glow_center
+    alpha 0.6
+    zoom title_cover
+    ease 1.0 zoom title_cover * 1.8 alpha 1.0
+
+transform whiteout_fill:
+    alpha 0.0
+    pause 0.3
+    ease 0.9 alpha 1.0
+
+screen title_whiteout():
+    modal True
+    add "title_glow" at whiteout_glow
+    add "white" at whiteout_fill
+    timer 1.3 action Start()
+
+
+## ── 타이틀 메뉴 ───────────────────────────────────
+## 왼쪽 아래 길바닥 자리에 세로로 놓입니다.
+## 밝은 안개(화면 가운데 높이)와 스케치북(오른쪽 아래)을 피한 자리입니다.
+
+## 메뉴 위치와 간격. 그림 기준 좌표라 여기만 고치면 전체가 같이 움직입니다.
+define title_menu_pos = (120, 400)
+define title_menu_spacing = 24
+
+## 글자 색
+define title_menu_idle  = "#fff6ec"   # 평소: 따뜻한 흰색
+define title_menu_hover = "#ffd68c"   # 마우스를 올렸을 때: 등불 같은 금빛
+define title_menu_ink   = "#462834"   # 테두리: 로고와 같은 자두색 계열
+
+style title_menu_button is button:
+    background None
+    padding (28, 4, 12, 4)
+    hover_foreground Transform(
+        Text("›", font=gui.interface_text_font, size=36, color=title_menu_hover,
+            outlines=[ (3, title_menu_ink + "c8", 0, 0) ]),
+        xpos=2, yalign=0.5)
+
+style title_menu_button_text is button_text:
+    font gui.interface_text_font
+    size 42
+    idle_color title_menu_idle
+    hover_color title_menu_hover
+    selected_color title_menu_hover
+    insensitive_color "#fff6ec80"
+    outlines [ (3, title_menu_ink + "c8", 0, 0), (8, "#28161e40", 0, 2) ]
+    kerning 1.0
+
+## 마우스를 올리면 오른쪽으로 살짝 밀리고, 앞에 작은 표시가 생깁니다.
+transform title_menu_item:
+    on idle:
+        ease 0.18 xoffset 0
+    on hover:
+        ease 0.18 xoffset 10
+
+transform title_menu_in(delay=0.0):
+    alpha 0.0
+    xoffset -12
+    pause (1.2 + delay)
+    ease 0.6 alpha 1.0 xoffset 0
+
+screen title_menu():
+
+    vbox:
+        pos title_menu_pos
+        spacing title_menu_spacing
+
+        textbutton "시작하기":
+            style "title_menu_button"
+            action Show("title_whiteout")
+            at title_menu_in(0.0), title_menu_item
+
+        textbutton "불러오기":
+            style "title_menu_button"
+            action ShowMenu("load")
+            at title_menu_in(0.1), title_menu_item
+
+        textbutton "환경설정":
+            style "title_menu_button"
+            action ShowMenu("preferences")
+            at title_menu_in(0.2), title_menu_item
+
+        textbutton "크레딧":
+            style "title_menu_button"
+            action Start("ending_credit")
+            at title_menu_in(0.3), title_menu_item
+        
+        if renpy.variant("pc"):
+            textbutton "종료":
+                style "title_menu_button"
+                action Quit(confirm=True)
+                at title_menu_in(0.4), title_menu_item
+
+
+
+################################################################################
+## 아이템 도감 화면
+################################################################################
+
+## ── 아이템 데이터 ─────────────────────────────────────────
+define ITEMS = [
+    {
+        "id": "umbrella",
+        "name": "노란 우산의 기억",
+        "route": "소은",
+        "image": "images/items/item_umbrella.png",
+        "desc": "비 오는 날, 공원 나무 밑에 서 있던 내게 노란 우산이 다가왔다.",
+    },
+    {
+        "id": "rooftop_key",
+        "name": "옥상 열쇠",
+        "route": "태은",
+        "image": "images/items/item_key.png",
+        "desc": "원래 잠겨 있어야 하는 문의 열쇠.",
+    },
+    {
+        "id": "dain_photo",
+        "name": "다인과 찍은 사진",
+        "route": "다인",
+        "image": "images/items/item_photo.png",
+        "desc": "다인이 내 볼을 양쪽으로 잡아당기며 웃고 있다.",
+    },
+    {
+        "id": "pencil",
+        "name": "몽당연필",
+        "route": "소은",
+        "image": "images/items/item_pencil.png",
+        "desc": "손가락 한 마디만 남은 연필. 끝이 둥글게 닳아 있다.",
+    },
+    {
+        "id": "watch",
+        "name": "멈춘 손목시계",
+        "route": "태은",
+        "image": "images/items/item_watch.png",
+        "desc": "낡은 가죽 끈에, 바늘이 멈춘 시계.",
+    },
+    {
+        "id": "keyring",
+        "name": "토끼 키링",
+        "route": "다인",
+        "image": "images/items/item_rabbit.png",
+        "desc": "다인의 가방에 걸려 있던 토끼 키링.",
+    },
+]
+
+## 크기 조절 (프로젝트 해상도가 1280x720이면 ITEM_BOX 120, ITEM_DESC_WIDTH 300 정도로 줄이세요)
+define ITEM_BOX = 160          # 아이템 칸 한 변 길이(px)
+define ITEM_DESC_WIDTH = 420   # 오른쪽 설명 영역 너비(px)
+
+
+## ── 도감 기록 (회차가 바뀌어도 남는 영구 기록) ─────────────────────────────────────────
+default persistent.items_found = set()
+
+init python:
+
+    def item_name(item_id):
+        for i in ITEMS:
+            if i["id"] == item_id:
+                return i["name"]
+        return item_id
+
+    def get_item(item_id):
+        ## 이번 회차용 변수 (엔딩 조건에 쓰는 item_umbrella 등)
+        setattr(store, "item_" + item_id, True)
+        ## 도감용 영구 기록
+        persistent.items_found.add(item_id)
+        ## 획득 알림
+        renpy.notify("아이템 획득: " + item_name(item_id))
+
+
+## ── 도감 화면 ─────────────────────────────────────────
+screen collection():
+
+    tag menu
+
+    default selected = None
+
+    $ found_count = len([i for i in ITEMS if i["id"] in persistent.items_found])
+
+    use game_menu(_("도감")):
+
+        hbox:
+            spacing 50
+
+            ## 왼쪽: 아이템 칸
+            vbox:
+                spacing 20
+
+                text "수집 " + str(found_count) + " / " + str(len(ITEMS)) size 22 color "#ffffffaa"
+
+                ## 아이템 개수를 바꾸면 여기 숫자(가로 3 × 세로 2)도 맞춰 주세요.
+                grid 3 2:
+                    spacing 20
+
+                    for item in ITEMS:
+                        $ found = item["id"] in persistent.items_found
+
+                        button:
+                            xysize (ITEM_BOX, ITEM_BOX)
+                            background "#ffffff14"
+                            hover_background "#ffffff33"
+                            selected_background "#ffffff4d"
+                            insensitive_background "#0000004d"
+                            sensitive found
+                            action SetScreenVariable("selected", item)
+
+                            if found:
+                                if renpy.loadable(item["image"]):
+                                    add item["image"] fit "contain" xysize (ITEM_BOX - 24, ITEM_BOX - 24) align (0.5, 0.5)
+                                else:
+                                    text item["name"] size 20 text_align 0.5 align (0.5, 0.5)
+                            else:
+                                text "?" size 64 color "#ffffff55" align (0.5, 0.5)
+
+            ## 오른쪽: 설명
+            vbox:
+                xsize ITEM_DESC_WIDTH
+                spacing 16
+
+                if selected:
+                    text selected["name"] size 34
+                    text selected["route"] + " 쪽으로 이어진 물건" size 20 color "#ffffff99"
+                    null height 10
+                    text selected["desc"] size 24
+                else:
+                    text "보고 싶은 물건을 고르세요." size 24 color "#ffffff88"
+
+
+
+################################################################################
+## 스토리라인 (분기 흐름도)
+################################################################################
+## 15개 label을 갈라지고 합쳐지는 흐름도로 보여 주고, 누르면 그 label로 이동합니다.
+## 엔딩 3개만 제목 + 그림 카드, 나머지는 텍스트 버튼입니다.
+## 한 번 본 장면만 누를 수 있고, 아직 못 본 장면은 흐리게 잠겨 있습니다.
+
+## ── 장면 목록 ─────────────────────────────────────────
+## label  : script.rpy에 있는 label 이름 (철자가 정확히 같아야 합니다)
+## route  : 버튼 색을 정하는 인물 (이준 / 소은 / 태은 / 다인)
+## ending : True면 그림이 들어가는 엔딩 카드
+## image  : 엔딩 그림 경로. 지금은 None(그림 없음)입니다.
+
+define STORYLINE = [
+    {"label": "start",           "no": "1",   "route": "이준", "title": "그날로부터, 1년"},
+    {"label": "ch2",             "no": "2",   "route": "이준", "title": "균열과 제안"},
+    {"label": "ch2_keep_soeun",  "no": "2-1", "route": "소은", "title": "사진 한 장을 내놓다"},
+    {"label": "ch2_keep_dain",   "no": "2-2", "route": "다인", "title": "첫 기억을 내놓다"},
+    {"label": "ch3",             "no": "3",   "route": "이준", "title": "첫 번째 회귀"},
+    {"label": "ch4",             "no": "4",   "route": "이준", "title": "두 번째 시도"},
+    {"label": "ch4_stay_taeeun", "no": "4-1", "route": "태은", "title": "끝까지 듣다"},
+    {"label": "ch4_go_dain",     "no": "4-2", "route": "다인", "title": "부르는 쪽으로"},
+    {"label": "ch5",             "no": "5",   "route": "이준", "title": "옅어지는 것들"},
+    {"label": "ch5_stay_taeeun", "no": "5-1", "route": "태은", "title": "내가 널 기억할게"},
+    {"label": "ch5_go_soeun",    "no": "5-2", "route": "소은", "title": "용기를 낸 대가"},
+    {"label": "ch6",             "no": "6",   "route": "이준", "title": "마지막 하루"},
+    {"label": "end_soeun",       "no": "end", "route": "소은", "title": "다 그리면 알려줄게", "kind": "소은 엔딩", "ending": True, "image": "images/cg end_soeun.png"},
+    {"label": "end_taeeun",      "no": "end", "route": "태은", "title": "오랜만의 평범함",    "kind": "태은 엔딩", "ending": True, "image": "images/cg end_taeeun.png"},
+    {"label": "end_dain",        "no": "end", "route": "다인", "title": "여전히, 여기",       "kind": "다인 엔딩", "ending": True, "image": "images/cg end_dain.png"},
+]
+
+## 흐름도의 줄 구성 (위에서 아래로). 한 줄에 2개면 갈림길, 3개면 엔딩 갈림길.
+## 갈림길 안에서는 왼쪽 → 오른쪽 순서로 놓입니다.
+define SL_ROWS = [
+    ["start"],
+    ["ch2"],
+    ["ch2_keep_soeun", "ch2_keep_dain"],
+    ["ch3"],
+    ["ch4"],
+    ["ch4_stay_taeeun", "ch4_go_dain"],
+    ["ch5"],
+    ["ch5_stay_taeeun", "ch5_go_soeun"],
+    ["ch6"],
+    ["end_soeun", "end_taeeun", "end_dain"],
+]
+
+## 테스트용: True로 바꾸면 안 본 장면도 전부 열립니다. 배포 전에는 꼭 False로.
+define STORYLINE_UNLOCK_ALL = True
+
+## 색
+define SL_ROUTE_COLOR = {"이준": "#919191", "소은": "#e0a040", "태은": "#89a5c0", "다인": "#121d2b"}
+define SL_ACCENT = "#c4839f"      # 제목 탭 · 위쪽 띠
+define SL_PAPER = "#f6f3ee"       # 패널 바탕
+define SL_INK = "#3a3640"         # 글자
+define SL_INK_SOFT = "#3a364099"  # 흐린 글자
+define SL_LOCKED = "#e2e0e7"      # 잠긴 버튼 바탕
+define SL_LOCKED_INK = "#3a364055"
+define SL_LINE = "#b8b2c4"        # 연결선
+
+## 크기 (1920x1080 기준. 다른 해상도에서는 자동으로 비율을 맞춥니다)
+define SL_NODE_W = 380     # 텍스트 버튼 너비
+define SL_NODE_H = 60      # 텍스트 버튼 높이
+define SL_ROW_GAP = 64     # 줄 사이 간격 (연결선 길이)
+define SL_PAIR_DX = 250    # 갈림길 버튼이 가운데서 벌어지는 거리
+define SL_END_DX = 470     # 엔딩 카드가 가운데서 벌어지는 거리
+define SL_CARD_W = 400     # 엔딩 카드 너비
+define SL_CARD_HEAD = 52   # 엔딩 카드 제목 칸 높이
+define SL_CARD_IMG = 225   # 엔딩 그림 높이 (너비 400과 16:9)
+define SL_LINE_W = 4       # 연결선 두께
+
+
+## ── 기능 ─────────────────────────────────────────
+
+init python:
+
+    SL_BY_LABEL = {e["label"]: e for e in STORYLINE}
+
+    ## 1920x1080 기준 크기를 지금 해상도에 맞게 바꿔 줌
+    def sl(n):
+        return int(round(n * config.screen_width / 1920.0))
+
+    ## 한 번이라도 본 label인지 (세이브와 상관없이 기록됨)
+    def storyline_unlocked(entry):
+        return STORYLINE_UNLOCK_ALL or renpy.seen_label(entry["label"])
+
+    ## 버튼 위치와 연결선 계산
+    ## 돌려주는 값: 캔버스 너비, 높이, [(장면, 가운데 x, 위쪽 y, 엔딩 여부)], [(x, y, 너비, 높이) 선]
+    def storyline_layout():
+        cw = sl(1500)
+        cx = cw // 2
+        t = max(2, sl(SL_LINE_W))
+
+        nodes = []
+        lines = []
+        y = sl(50)
+        prev = None
+
+        for row in SL_ROWS:
+            n = len(row)
+            if n == 1:
+                xs = [cx]
+            elif n == 2:
+                xs = [cx - sl(SL_PAIR_DX), cx + sl(SL_PAIR_DX)]
+            else:
+                xs = [cx - sl(SL_END_DX), cx, cx + sl(SL_END_DX)]
+
+            is_end = all(SL_BY_LABEL[l].get("ending", False) for l in row)
+            h = sl(SL_CARD_HEAD + SL_CARD_IMG) if is_end else sl(SL_NODE_H)
+
+            ## 위 줄과 이어 주는 선: 내려오는 선 → 가로선 → 내려가는 선
+            if prev:
+                pxs, pbottom = prev
+                mid = (pbottom + y) // 2
+                for x in pxs:
+                    lines.append((x - t // 2, pbottom, t, mid - pbottom))
+                for x in xs:
+                    lines.append((x - t // 2, mid, t, y - mid))
+                allx = pxs + xs
+                if min(allx) != max(allx):
+                    lines.append((min(allx) - t // 2, mid - t // 2, max(allx) - min(allx) + t, t))
+
+            for l, x in zip(row, xs):
+                nodes.append((SL_BY_LABEL[l], x, y, is_end))
+
+            prev = (xs, y + h)
+            y = y + h + sl(SL_ROW_GAP)
+
+        ch = y - sl(SL_ROW_GAP) + sl(60)
+        return cw, ch, nodes, lines
+
+    ## 이동하기 전에 아이템 상태 정리
+    ## - 처음(start)부터 보면: 새 게임처럼 아이템 없이 시작
+    ## - 그 외 장면에서 보면: 아이템을 모두 들고 시작 → 엔딩 선택지 3개가 모두 열림
+    def storyline_prepare(target):
+        grant = (target != "start")
+        for item_id in ["umbrella", "pencil", "rooftop_key", "watch", "dain_photo", "keyring"]:
+            setattr(store, "item_" + item_id, grant)
+
+    ## 버튼을 눌렀을 때의 동작
+    ## 타이틀 화면에서는 바로 이동, 게임 중에는 한 번 확인하고 이동
+    def storyline_action(label):
+        go = [SetField(persistent, "storyline_target", label), Start("storyline_jump")]
+        if store.main_menu:
+            return go
+        return Confirm("지금 진행 중인 내용은 저장되지 않아요.\n이 장면으로 이동할까요?", go)
+
+
+## 실제 이동은 여기를 거쳐서 합니다.
+label storyline_jump:
+    $ _sl_target = persistent.storyline_target or "start"
+    $ storyline_prepare(_sl_target)
+
+    ## 이전 장면의 연출(회상 톤, 음악 등)이 남지 않도록 정리
+    camera
+    scene black
+    stop music fadeout 1.0
+    stop sound
+    window hide
+
+    ## 이 장면의 준비 label(sl_setup_라벨이름)이 있으면 먼저 실행해서
+    ## 배경 · 캐릭터 · 음악을 깔아 둡니다.
+    if renpy.has_label("sl_setup_" + _sl_target):
+        call expression ("sl_setup_" + _sl_target)
+
+    $ renpy.block_rollback()
+
+    $ renpy.jump(_sl_target)
+
+## 준비 label (이어지는 라벨로 이동할 때 검은 화면이 뜨는 현상 수정)
+label sl_setup_ch2_keep_soeun:
+    scene bg alley
+    show taeeun normal at character_size
+    play music "bgm_price.ogg"
+    return
+
+label sl_setup_ch2_keep_dain:
+    scene bg alley
+    show taeeun normal at character_size
+    play music "bgm_price.ogg"
+    return
+
+label sl_setup_ch4_stay_taeeun:
+    scene bg rooftop_day
+    show taeeun normal at character_size
+    return
+
+label sl_setup_ch4_go_dain:
+    scene bg rooftop_day
+    show taeeun normal at character_size
+    return
+
+label sl_setup_ch5_stay_taeeun:
+    scene bg rooftop_day
+    show taeeun normal at character_size
+    return
+
+label sl_setup_ch5_go_soeun:
+    scene bg rooftop_day
+    show taeeun normal at character_size
+    return
+
+
+## ── 스토리라인 화면 ─────────────────────────────────────────
+
+screen storyline():
+
+    tag menu
+
+    $ cw, ch, nodes, lines = storyline_layout()
+    $ total = len(STORYLINE)
+    $ seen_count = len([e for e in STORYLINE if storyline_unlocked(e)])
+
+    key "game_menu" action Return()
+
+    ## 배경 (뒤 화면을 어둡게)
+    if main_menu:
+        add gui.main_menu_background
+    else:
+        add gui.game_menu_background
+    add Solid("#16131dcc")
+
+    ## 왼쪽 위 제목 탭
+    frame:
+        pos (0, sl(40))
+        padding (sl(110), sl(16), sl(44), sl(16))
+        background SL_ACCENT
+
+        hbox:
+            spacing sl(22)
+            text "스토리라인" size sl(36) color "#ffffff"
+            text (str(seen_count) + " / " + str(total)) size sl(24) color "#ffffffbb" yalign 0.5
+
+    ## 가운데 패널
+    frame:
+        xalign 0.5
+        ypos sl(150)
+        xysize (sl(1560), sl(800))
+        padding (0, 0)
+        background SL_PAPER
+
+        fixed:
+
+            ## 위쪽 색 띠
+            add Solid(SL_ACCENT) xysize (sl(1560), sl(8))
+
+            ## 흐름도 (마우스 휠 · 드래그로 위아래 이동)
+            viewport id "sl_vp":
+                pos (sl(30), sl(8))
+                xysize (sl(1500), sl(792))
+                mousewheel True
+                draggable True
+
+                fixed:
+                    xysize (cw, ch)
+
+                    ## 연결선
+                    for r in lines:
+                        add Solid(SL_LINE) pos (r[0], r[1]) xysize (r[2], r[3])
+
+                    ## 버튼 · 엔딩 카드
+                    for e, x, y, is_end in nodes:
+                        if is_end:
+                            use storyline_ending(e, x, y)
+                        else:
+                            use storyline_node(e, x, y)
+
+            ## 오른쪽 스크롤바
+            vbar value YScrollValue("sl_vp"):
+                style "vscrollbar"
+                xalign 1.0
+                xoffset -sl(12)
+                ypos sl(40)
+                ysize sl(720)
+                unscrollable "hide"
+
+    ## 뒤로가기
+    textbutton "< 뒤로가기":
+        pos (sl(60), config.screen_height - sl(80))
+        yanchor 0.5
+        padding (sl(26), sl(10))
+        background "#ffffff"
+        hover_background "#e6ecf4"
+        text_size sl(24)
+        text_color SL_INK
+        text_hover_color SL_ACCENT
+        action Return()
+
+
+## 텍스트 버튼 (본편 · 분기)
+screen storyline_node(e, x, y):
+
+    $ unlocked = storyline_unlocked(e)
+    $ color = SL_ROUTE_COLOR.get(e["route"], SL_ACCENT)
+
+    button:
+        pos (x, y)
+        xanchor 0.5
+        xysize (sl(SL_NODE_W), sl(SL_NODE_H))
+        padding (0, 0)
+        background ("#ffffff" if unlocked else SL_LOCKED)
+        hover_background (color + "33")
+        sensitive unlocked
+        action storyline_action(e["label"])
+
+        fixed:
+            ## 왼쪽 색 띠
+            add Solid(color if unlocked else "#c9c5d1") xysize (sl(8), sl(SL_NODE_H))
+
+            hbox:
+                align (0.5, 0.5)
+                spacing sl(14)
+                text e["no"] size sl(22) color (color if unlocked else SL_LOCKED_INK) yalign 0.5
+                text e["title"] size sl(26) color (SL_INK if unlocked else SL_LOCKED_INK) hover_color color yalign 0.5
+
+
+## 엔딩 카드 (제목 + 그림)
+screen storyline_ending(e, x, y):
+
+    $ unlocked = storyline_unlocked(e)
+    $ color = SL_ROUTE_COLOR.get(e["route"], SL_ACCENT)
+    $ img = e.get("image")
+
+    button:
+        pos (x, y)
+        xanchor 0.5
+        xysize (sl(SL_CARD_W), sl(SL_CARD_HEAD + SL_CARD_IMG))
+        padding (0, 0)
+        background ("#ffffff" if unlocked else SL_LOCKED)
+        hover_foreground Solid("#ffffff2e")
+        sensitive unlocked
+        action storyline_action(e["label"])
+
+        vbox:
+            ## 제목 칸
+            frame:
+                xysize (sl(SL_CARD_W), sl(SL_CARD_HEAD))
+                padding (0, 0)
+                background (color if unlocked else "#c9c5d1")
+
+                hbox:
+                    align (0.5, 0.5)
+                    spacing sl(12)
+                    text e["kind"] size sl(18) color "#ffffffcc" yalign 0.5
+                    text e["title"] size sl(24) color "#ffffff" yalign 0.5
+
+            ## 그림 칸
+            fixed:
+                xysize (sl(SL_CARD_W), sl(SL_CARD_IMG))
+
+                if not unlocked:
+                    text "?" size sl(96) color "#ffffffdd" align (0.5, 0.5)
+
+                elif img and renpy.loadable(img):
+                    add img fit "contain" xysize (sl(SL_CARD_W), sl(SL_CARD_IMG)) align (0.5, 0.5)
+
+                else:
+                    ## 그림이 아직 없을 때
+                    vbox:
+                        align (0.5, 0.5)
+                        spacing sl(6)
+                        text e["kind"] size sl(36) color color xalign 0.5
+                        text "ENDING" size sl(18) color SL_INK_SOFT xalign 0.5
