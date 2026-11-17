@@ -1648,11 +1648,11 @@ screen ending_credit(skippable=True):
         spacing 24
 
         # 위→아래 방식은 아래쪽 줄이 먼저 화면에 들어옵니다.
-        text "Thank you for playing" size 40 xalign 0.5
+        text "Thank you for playing" size 50 xalign 0.5
         null height 80
-        text "폰트  Pretendard" xalign 0.5
+        text "폰트  눈누 - Pretendard" xalign 0.5
         null height 40
-        text "효과음  効果音ラボ, Pixabay, Freesound" xalign 0.5
+        text "효과음  SoundEffect Lab, Pixabay, Freesound" xalign 0.5
         null height 40
         text "음악  SunoAI, Claude" xalign 0.5
         null height 40
@@ -2059,7 +2059,7 @@ define SL_ROWS = [
 ]
 
 ## 테스트용: True로 바꾸면 안 본 장면도 전부 열립니다. 배포 전에는 꼭 False로.
-define STORYLINE_UNLOCK_ALL = True
+define STORYLINE_UNLOCK_ALL = False
 
 ## 색
 define SL_ROUTE_COLOR = {"이준": "#919191", "소은": "#e0a040", "태은": "#89a5c0", "다인": "#121d2b"}
@@ -2174,7 +2174,7 @@ label storyline_jump:
     ## 이 장면의 준비 label(sl_setup_라벨이름)이 있으면 먼저 실행해서
     ## 배경 · 캐릭터 · 음악을 깔아 둡니다.
     if renpy.has_label("sl_setup_" + _sl_target):
-        call expression ("sl_setup_" + _sl_target)
+        call expression ("sl_setup_" + _sl_target) from _call_expression
 
     $ renpy.block_rollback()
 
